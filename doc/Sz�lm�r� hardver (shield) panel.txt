@@ -1,0 +1,11 @@
+A panel alkatrészoldalával lefelé dugható be a Ethernet shield-be. Bedugott helyzetben nem magasabb a Ethernet csatlakozó legfelsõ pontjánál.
+Egy DS1307 idõalapot képez, de az idõ kikapcsolt helyzetbeli megõrzésére telep nincs.
+A 1307 4. és 5. lába az Arduino 18. és 19. (másnéven A4 és A5) lábára csatlakozik. A lábakon egy-egy 10 kohmos felhúzó ellenállás van.   
+A 1307 négyszögjel-kimenete az IRQ0 (2.) lábra megy: itt is van egy 10 kohmos felhúzó ellenállás, sorban vele egy LED.
+A kimenõ "sokeres" kábel egy-egy ere a A0-A3 (14. - 17.) lábhoz van forrasztva, de csak az A0 bemenet van a csatlakozóba bekötve.
+  (színek késõbb definiálandók.)
+
+A kimenõ sokeres kábel ezen kívül (a csatlakozóra is kikötve) földet, 5V-ot és a szélmérõ kapcsolóját viszi.
+
+A kapcsoló 10 kohmos ellenállással "fel van húzva", és földre zár.
+A kapcsoló IC-vel pergésmentesítve van, úgy, hogy az elsõ zárás egy 2 ms-os impulzust eredményez, amely az Arduinó IRQ1-es  (3.) lábára van kötve. 
