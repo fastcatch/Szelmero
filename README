@@ -1,0 +1,7 @@
+The codes are for a custom-made windspeed logger anf publisher.
+
+The code is for an Arduino-based custom controller and has two versions (one without direction logging and one with it).  In a severe storm the direction logger IC got busted (most likely by a lightning) and it's a hassle to replace -- so the system now runs without.
+
+Most times results are available at: http://gardonyiszel.info
+
+The router provided by the hotel where the logger is installed is not reliable and sometimes even gets turned off completely so if data is not there it's most likely not my fault :)))).
