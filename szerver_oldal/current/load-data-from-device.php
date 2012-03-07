@@ -48,7 +48,7 @@ if ( $result['errno'] != 0 ) {    // Device not available
 }
 $invalid_date = preg_match('/<hr>2000/',$page);
 if ( $invalid_date ) {
-  // Set time (+1 day in date is required because the controller wouldn't handle 2012's leap year properly...)
+  // Set time (+1 day in date is monkey patch because the controller wouldn't handle 2012's leap year properly...)
   $datetime_to_set = strtotime(date("Y-m-d H:i:s") . " +1 day");
   $timestr = date("ymdHis", $datetime_to_set);
   $result = get_web_page( $mainurl . "/settime?TIME=" . $timestr );
@@ -78,7 +78,12 @@ foreach ($datalines as $currentline)
         $formatteddate .= "-" . substr($dataentries[0],2,2);
         $formatteddate .= " " . substr($dataentries[0],4,2);
         $formatteddate .= ":" . substr($dataentries[0],6,2);
-        $formatteddate .= ":00"; 
+        $formatteddate .= ":00";
+
+	// Monkey patch: Adjust by one day for 2012 leap year
+        $patched_date = strtotime($formatteddate . " +1 day");
+        $formatteddate = date("Y-m-d H:i:s", $patched_date);
+
         $dataentries[0] = $formatteddate;
         $dataentries[1] = trim($dataentries[1]);
         $dataentries[2] = trim($dataentries[2]);
@@ -89,7 +94,8 @@ foreach ($datalines as $currentline)
         $exists=mysql_numrows($result);
         if ( $exists == 0 )
           {
-            $query = "INSERT INTO rawdata (at,avgspeed,maxgust) VALUES ('" . $dataentries[0] . "'," . $dataentries[1] . "," . $dataentries[2] . ");";
+            $query = "INSERT INTO rawdata (at,avgspeed,maxgust) VALUES ('" . $dataentries[0] . "'," . $dataentries[1] . "," . $dataentries[2] . 
+");";
             mysql_query($query);
           }
       }
