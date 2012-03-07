@@ -12,8 +12,8 @@
 WebServerClass::WebServerClass()
 {
     mymac[0]=0x54; mymac[1]=0x55; mymac[2]=0x58; mymac[3]=0x10; mymac[4]=0x00; mymac[5]=0x24;
-    myip[0]=192; myip[1]=168; myip[2]=90; myip[3]=9;
-    strcpy(baseurl,"http://192.168.90.9/");
+    myip[0]=192; myip[1]=168; myip[2]=2; myip[3]=9;
+    strcpy(baseurl,"http://192.168.2.9/");
     mywwwport=80;
 //    init();
 }
@@ -66,7 +66,7 @@ void WebServerClass::serve(){
 
   plen = es.ES_enc28j60PacketReceive(BUFFER_SIZE, buf);
 
-	/*plen will ne unequal to zero if there is a valid packet (without crc error) */
+  /* plen will be unequal to zero if there is a valid packet (without crc error) */
   if (plen == 0) return;
   
   // arp is broadcast if unknown but a host may also verify the mac address by sending it to a unicast address.
@@ -214,6 +214,9 @@ uint16_t WebServerClass::prepareDataHistoryWebPage(uint8_t *buf)
       plen=es.ES_fill_tcp_data_p(buf,plen,PSTR(","));
       itoa(ROTATIONS_TO_KPH(windData.buffer[i].maxGustRotations,GUST_SECS), tmpstr, 10);
       plen=es.ES_fill_tcp_data(buf,plen,tmpstr);
+      plen=es.ES_fill_tcp_data_p(buf,plen,PSTR(","));
+      itoa(DIRECTION_TO_DEGREES(windData.buffer[i].avgDirection), tmpstr, 10);
+      plen=es.ES_fill_tcp_data(buf,plen,tmpstr);
       plen=es.ES_fill_tcp_data_p(buf,plen,PSTR("<br>") );     
     }
     i=windData.next(i);
@@ -242,6 +245,10 @@ uint16_t WebServerClass::prepareCurrentReadingWebPage(uint8_t *buf)
     
     plen=es.ES_fill_tcp_data_p(buf,plen,PSTR("<br>Max sz&eacute;ll&ouml;k&eacute;s:"));
     itoa(ROTATIONS_TO_KPH(windData.buffer[i].maxGustRotations,GUST_SECS), tmpstr, 10);
+    plen=es.ES_fill_tcp_data(buf,plen,tmpstr);
+    
+    plen=es.ES_fill_tcp_data_p(buf,plen,PSTR("<br>Ir&aacute;ny:"));
+    itoa(DIRECTION_TO_DEGREES(windData.buffer[i].avgDirection), tmpstr, 10);
     plen=es.ES_fill_tcp_data(buf,plen,tmpstr);
 
     plen=es.ES_fill_tcp_data_p(buf,plen,PSTR("</h1>"));

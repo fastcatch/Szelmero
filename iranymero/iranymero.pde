@@ -10,9 +10,11 @@ void setup()
 void loop()
 {
   windDirection.read();
-  Serial.print("Locked:");  Serial.println(windDirection.isReadingValid() ? "YES" : "no"); 
-  Serial.print("Field strength (%):");  Serial.println(windDirection.magneticFieldStrengthPercent(),DEC); 
-  Serial.print("Position:");  Serial.println(windDirection.angularPosition(),DEC); 
+  Serial.print("Locked:");  Serial.println(windDirection.isReadingValid() ? "YES" : "no");
+  if ( windDirection.isReadingValid() ) {
+    Serial.print("Field strength (%):");  Serial.println(windDirection.magneticFieldStrengthPercent(),DEC); 
+    Serial.print("Position:");  Serial.println(windDirection.angularPosition(),DEC); 
+  }
   Serial.println("");
   delay(3000);
 }

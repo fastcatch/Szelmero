@@ -11,7 +11,7 @@
 
 // include types & constants of Wire ic2 lib
 extern "C" {
-  #include <c:\arduino\libraries\Wire\Wire.h>
+  #include <c:\arduino-0018\libraries\Wire\Wire.h>
 //#include <../Wire/Wire.h>
 }
 #include <../Wire/Wire.h>

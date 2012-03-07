@@ -1,7 +1,7 @@
 //#include <c:\arduino\hardware\libraries\Wire\Wire.h>
 
 extern "C" {
-  #include <c:\arduino\libraries\Wire\Wire.h>
+  #include <c:\arduino-0018\libraries\Wire\Wire.h>
 //#include <../Wire/Wire.h>
 }
 #include "DS1307.h"
