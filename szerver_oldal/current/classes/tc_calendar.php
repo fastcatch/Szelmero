@@ -3,7 +3,7 @@
 // The php calendar component 
 // written by TJ @triconsole
 //
-// version 2.4 (20 June 2009)
+// version 2.5 (3 October 2009)
 
 
 //bug fixed: Incorrect next month display show on 'February 2008'
@@ -56,7 +56,7 @@ class tc_calendar{
 	var $icon;
 	var $objname;
 	var $txt;
-	var $date_format;
+	var $date_format = 'Y. F d.'; //format of date show in panel if $show_input is false
 	var $year_display_from_current = 30;
 	
 	var $date_picker;
@@ -82,11 +82,12 @@ class tc_calendar{
 	var $form_container;
 	var $target_url;
 	
+	var $show_input = true;
+	
 	//calendar constructor
-	function tc_calendar($objname, $date_picker = false){
+	function tc_calendar($objname, $date_picker = false, $show_input = true){
 		$this->objname = $objname;
 		$this->txt = "Select";
-		$this->date_format = "Y-m-d";
 		//$this->year_display_from_current = 50;
 		$this->date_picker = $date_picker;
 		
@@ -94,6 +95,8 @@ class tc_calendar{
 		$thisyear = date('Y');
 		$this->year_start = $thisyear-$this->year_display_from_current;
 		$this->year_end = $thisyear+$this->year_display_from_current;
+		
+		$this->show_input = $show_input;
 	}
 	
 	//check for leapyear
@@ -117,9 +120,9 @@ class tc_calendar{
 	//get the day headers start from sunday till saturday
 	function getDayHeaders(){
 		if($this->startMonday)
-			return array("1"=>"H&eacute;", "2"=>"Ke", "3"=>"Sz", "4"=>"Cs", "5"=>"P&eacute;", "6"=>"Sz","7"=>"Va");
+			return array("1"=>"Mo", "2"=>"Tu", "3"=>"We", "4"=>"Th", "5"=>"Fr", "6"=>"Sa","7"=>"Su");
 		else
-			return array("7"=>"Va", "1"=>"H&eacute;", "2"=>"Ke", "3"=>"Sz", "4"=>"Cs", "5"=>"P&eacute;", "6"=>"Sz");
+			return array("7"=>"Su", "1"=>"Mo", "2"=>"Tu", "3"=>"We", "4"=>"Th", "5"=>"Fr", "6"=>"Sa");
 	}
 	
 	function setIcon($icon){
@@ -130,7 +133,10 @@ class tc_calendar{
 		$this->txt = $txt;
 	}
 	
-	//not currently in-used
+	//-----------------------------------------------------------
+	//input the date format according to php date format
+	// for example: 'd F y' or 'Y-m-d'
+	//-----------------------------------------------------------
 	function setDateFormat($format){
 		$this->date_format = $format;
 	}
@@ -154,9 +160,14 @@ class tc_calendar{
 
 		//check whether it is a date picker
 		if($this->date_picker){
-			$this->writeYear();
-			$this->writeMonth();
-			$this->writeDay();
+			if($this->show_input){
+				$this->writeYear();
+				$this->writeMonth();
+				$this->writeDay();
+			}else{
+				$this->writeDateContainer();
+			}
+			
 			echo(" <a href=\"javascript:toggleCalendar('div_".$this->objname."');\">");
 			if(is_file($this->icon)){
 				echo("<img src=\"".$this->icon."\" id=\"tcbtn_".$this->objname."\" name=\"tcbtn_".$this->objname."\" border=\"0\" align=\"absmiddle\" />");
@@ -189,6 +200,9 @@ class tc_calendar{
 		$params[] = "frm=".$this->form_container;
 		$params[] = "tar=".$this->target_url;
 		
+		$params[] = "inp=".$this->show_input;
+		$params[] = "fmt=".$this->date_format;
+		
 		$paramStr = (sizeof($params)>0) ? "?".implode("&", $params) : "";
 		
 		//write the calendar container
@@ -198,7 +212,7 @@ class tc_calendar{
 	//write the select box of days
 	function writeDay(){
 		echo("<select name=\"".$this->objname."_day\" id=\"".$this->objname."_day\" onChange=\"javascript:tc_setDay('".$this->objname."', this[this.selectedIndex].value, '$this->path');\" class=\"tcday\">");
-		echo("<option value=\"00\">Nap</option>");
+		echo("<option value=\"00\">Day</option>");
 		for($i=1; $i<=31; $i++){
 			$selected = ((int)$this->day == $i) ? " selected" : "";
 			echo("<option value=\"".str_pad($i, 2 , "0", STR_PAD_LEFT)."\"$selected>$i</option>");
@@ -209,7 +223,7 @@ class tc_calendar{
 	//write the select box of months
 	function writeMonth(){
 		echo("<select name=\"".$this->objname."_month\" id=\"".$this->objname."_month\" onChange=\"javascript:tc_setMonth('".$this->objname."', this[this.selectedIndex].value, '$this->path');\" class=\"tcmonth\">");
-		echo("<option value=\"00\">H&oacute;nap</option>");
+		echo("<option value=\"00\">Month</option>");
 		
 		$monthnames = $this->getMonthNames();		
 		for($i=1; $i<=sizeof($monthnames); $i++){
@@ -223,7 +237,7 @@ class tc_calendar{
 	function writeYear(){
 		//echo("<input type=\"textbox\" name=\"".$this->objname."_year\" id=\"".$this->objname."_year\" value=\"$this->year\" maxlength=4 size=5 onBlur=\"javascript:tc_setYear('".$this->objname."', this.value, '$this->path');\" onKeyPress=\"javascript:if(yearEnter(event)){ tc_setYear('".$this->objname."', this.value, '$this->path'); return false; }\"> ");
 		echo("<select name=\"".$this->objname."_year\" id=\"".$this->objname."_year\" onChange=\"javascript:tc_setYear('".$this->objname."', this[this.selectedIndex].value, '$this->path');\" class=\"tcyear\">");
-		echo("<option value=\"0000\">&Eacute;v</option>");
+		echo("<option value=\"0000\">Year</option>");
 		
 		
 		$year_start = $this->year_start;
@@ -274,6 +288,8 @@ class tc_calendar{
 		echo("<input type=\"hidden\" name=\"".$this->objname."_aut\" id=\"".$this->objname."_aut\" value=\"".$this->auto_submit."\">");
 		echo("<input type=\"hidden\" name=\"".$this->objname."_frm\" id=\"".$this->objname."_frm\" value=\"".$this->form_container."\">");
 		echo("<input type=\"hidden\" name=\"".$this->objname."_tar\" id=\"".$this->objname."_tar\" value=\"".$this->target_url."\">");
+		echo("<input type=\"hidden\" name=\"".$this->objname."_inp\" id=\"".$this->objname."_inp\" value=\"".$this->show_input."\">");
+		echo("<input type=\"hidden\" name=\"".$this->objname."_fmt\" id=\"".$this->objname."_fmt\" value=\"".$this->date_format."\">");
 	}
 	
 	//set width of calendar
@@ -292,7 +308,7 @@ class tc_calendar{
 	}
 	
 	function getMonthNames(){
-		return array("Janu&aacute;r", "Febru&aacute;r", "M&aacute;rcius", "&Aacute;prilis", "M&aacute;jus", "J&uacute;nius", "J&uacute;lius", "Augusztus", "Szeptember", "Okt&oacute;ber", "November", "December");		
+		return array('január', 'február', 'március', 'április', 'május', 'június', 'július', 'augusztus', 'szeptember', 'október', 'november', 'december');		
 	}
 	
 	function startMonday($flag){
@@ -313,6 +329,22 @@ class tc_calendar{
 	
 	function getDate(){
 		return $this->year."-".str_pad($this->month, 2, "0", STR_PAD_LEFT)."-".str_pad($this->day, 2, "0", STR_PAD_LEFT);
+	}
+	
+	function showInput($flag){
+		$this->show_input = $flag;
+	}
+	
+	function writeDateContainer(){
+		if($this->day && $this->month && $this->year) {
+//			$dd = date($this->date_format, mktime(0,0,0,$this->month,$this->day,$this->year));
+			$dt = mktime(0,0,0,$this->month,$this->day,$this->year);
+      $monthnames = $this->getMonthNames();
+			$dd = date("Y", $dt) . ". " . $monthnames[$this->month-1] . " " . date("d", $dt) . ".";
+    }
+		else $dd = "Select Date";
+		
+		echo("<span id=\"divCalendar_".$this->objname."_lbl\" class=\"calendarcontainer\">$dd</span>");
 	}
 }
 ?>

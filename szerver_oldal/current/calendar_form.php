@@ -21,6 +21,9 @@ $auto_submit = (isset($_REQUEST["aut"])) ? $_REQUEST["aut"] : false;
 $form_name = (isset($_REQUEST["frm"])) ? $_REQUEST["frm"] : "";
 $target_url = (isset($_REQUEST["tar"])) ? $_REQUEST["tar"] : "";
 
+$show_input = (isset($_REQUEST["inp"])) ? $_REQUEST["inp"] : true;
+$date_format = (isset($_REQUEST["fmt"])) ? $_REQUEST["fmt"] : 'd-M-Y';
+
 //echo("date: $sly-$slm-$sld");
 
 if(isset($_REQUEST["m"]))
@@ -92,7 +95,7 @@ else
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 <link href="calendar.css" rel="stylesheet" type="text/css" />
 <script language="javascript">
@@ -247,6 +250,8 @@ function submitNow(dvalue, mvalue, yvalue){
 		<input name="aut" type="hidden" id="aut" value="<?php echo($auto_submit);?>" />
 		<input name="frm" type="hidden" id="frm" value="<?php echo($form_name);?>" />
 		<input name="tar" type="hidden" id="tar" value="<?php echo($target_url);?>" />
+		<input name="inp" type="hidden" id="inp" value="<?php echo($show_input);?>" />
+		<input name="fmt" type="hidden" id="fmt" value="<?php echo($date_format);?>" />
     </form>    </td>
   </tr>
   <tr>
@@ -391,12 +396,12 @@ function submitNow(dvalue, mvalue, yvalue){
   <tr>
     <td class="btn" width="50%"><?php
     if($previous_year >= $year_start && $show_previous){
-	?><a href="javascript:move('<?php echo(str_pad($previous_month, 2, "0", STR_PAD_LEFT));?>', '<?php echo($previous_year);?>');">&lt; Vissza</a><?php
+	?><a href="javascript:move('<?php echo(str_pad($previous_month, 2, "0", STR_PAD_LEFT));?>', '<?php echo($previous_year);?>');">&lt; Previous</a><?php
     }else echo("&nbsp;");
 	?></td>
     <td align="right" class="btn" width="50%"><?php
     if($next_year <= $year_end && $show_next){
-	?><a href="javascript:move('<?php echo(str_pad($next_month, 2, "0", STR_PAD_LEFT));?>', '<?php echo($next_year);?>');">Elõre &gt;</a><?php
+	?><a href="javascript:move('<?php echo(str_pad($next_month, 2, "0", STR_PAD_LEFT));?>', '<?php echo($next_year);?>');">Next &gt;</a><?php
     }else echo("&nbsp;");
 	?></td>
   </tr>

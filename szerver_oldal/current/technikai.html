@@ -1,0 +1,49 @@
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<META NAME="Description" CONTENT="Velencei tavi (Gárdony) szél adatok: szélsebesség, webkamera (webcam) - a szörf, kite és vitorlázás szerelmeseinek">
+<title>Velencei tó - Gárdony szél adatok - Technikai részletek</title> 
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+</head>
+<body>
+<h1>Adatok értelmezése</h1>
+<p>
+A mérő folyamatosan rögzíti a szélsebességet: percenként eltárolja az abban a percben mért <u>átlagos</u> szélsebességet, valamint az abban a percben mért legnagyobb <u>széllökést</u>. (Ez utóbbit a legmagasabb 5 mp-es mért átlagnak definiáltuk.) Az adatokat mindig km/h-ban tároljuk és adjuk meg.  Az egy percnél hosszabb idejű összesítések esetén az egy perces átlagok átlaga adja a középértéket, és az időszakhoz tartozó legnagyobb széllökés adja a maximumot.
+</p>
+<p>
+A megjelenítés két grafikont tartalmaz: az egyik az elmúlt egy óra részletes adatait jeleníti meg (1 perces átlagok és legnagyobb széllökések), a másik pedig a kiválasztott dátum adatait (15 perces átlagok és legnagyobb széllökések).  A napi grafikon alaphelyzetben az aktuális napot mutatja.  Meg lehet nézni előző napok adatait is, ehhez dátumot a naptár ikonra (<img src="images/iconCalendar.gif" alt="naptar">) kattintva lehet választani.
+</p>
+<p><img src="images/magyarazo.png" alt="magyarazo abra" align="left" hspace=40>
+<small>
+Amennyiben a napi áttekintő képen a "A kiválasztott napra nincs adat" szöveg látható, az azt jelenti, hogy olyan dátumot választott ki, amihez egyáltalán nem tartozik mérési eredmény.  Az esetleges műszaki problémát az elmúlt egy órára vonatkozó grafikonon jelezzük: Ezekről az üzemeltetők automatikusan értesülnek, és a lehetőségek szerint igyekeznek a hibát minél hamarabb elhárítani; ehhez kérünk türelmet.
+</small></p><br clear=all>
+<p>
+A grafikonokon kívül megjelenítjük az utolsó leolvasás időpontját és a mért adatokat, valamint kicsiben a helyszíni webkamera képét is. Ha a webkamerához a böngésző felhasználónevet és jelszót kér, akkor mindkettőhöz a "vendeg" szót kell megadni (idézőjelek nélkül).
+</p>
+
+<h1>A mérő elhelyezkedése</h1>
+<table><tr>
+<td width=480 valign=top>
+<p>
+A szélmérő a Velencei tó partján álló <a href="http://www.velenceparthotel.hu" target="_blank">szálloda</a> épület tetejére, kb. 10 m magasra van telepítve.  A mérőfej (nappal :)) látszik a <a href="http://velencepart.ath.cx/images1sif" target="_blank">webkamera képén</a>.
+</p>
+A mérő tiszta szelet kap a legtöbb irányból (különösen a szeles vízisportok számára Gárdonyban lényeges irányokból), részleges takarásban van keleties (kb. ÉK-DK) irányokból. Ilyen irányú szelek esetén a mért értékek nem pontosak (azonban ilyenkor a víz parthoz közeli részein is bizonytalan a széljárás).
+</p>
+</td>
+<td width=40></td>
+<td>
+<iframe width="300" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=g%C3%A1rdonyi+sz%C3%A9lm%C3%A9r%C5%91&amp;sll=47.210153,18.627942&amp;sspn=0.007813,0.01929&amp;ie=UTF8&amp;t=k&amp;hq=g%C3%A1rdonyi+sz%C3%A9lm%C3%A9r%C5%91&amp;hnear=&amp;ll=47.210153,18.627963&amp;spn=0.008746,0.012875&amp;z=15&amp;iwloc=near&amp;output=embed"></iframe><br /><small><a href="http://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=g%C3%A1rdonyi+sz%C3%A9lm%C3%A9r%C5%91&amp;sll=47.210153,18.627942&amp;sspn=0.007813,0.01929&amp;ie=UTF8&amp;t=k&amp;hq=g%C3%A1rdonyi+sz%C3%A9lm%C3%A9r%C5%91&amp;hnear=&amp;ll=47.210153,18.627963&amp;spn=0.008746,0.012875&amp;z=15&amp;iwloc=A" style="color:#0000FF;text-align:left">Nagyobb térkép</a></small>
+</td>
+</table>
+
+<h1>Mérőrendszer</h1>
+<p>
+A szélmérő rendszer három részből áll:
+<ol>
+<li><a href="http://www.inspeed.com/anemometers/Vortex_Wind_Sensor.asp" target="_blank">"Forgókanalas" mérőfej</a> (ez látszik a <a href="http://velencepart.ath.cx/images1sif" target="_blank">webkamera képén</a> is).</li>
+<li>Mérésadatgyűjtő: egy "mini számítógép" (<a href="http://www.arduino.cc" target="_blank">Arduino</a>), ami a mérőfej adatait veszi (tulajdonképpen ez "mér"), és átalakítja feldolgozható formára.</li>
+<li>Szerver. A szerver két dolgot csinál: egyrészt rendszeresen lekérdezi a mérési eredményeket a mérésadatgyűjtőtől, és eltárolja; másrészt, aki az Internet-ről meg akarja nézni az adatokat, azt kiszolgálja (<a href="index.php" target="_blank">grafikonokkal</a>, stb.). A megjelenítő rész két külső komponenst használ: az egyiket a <a href="http://www.triconsole.com/php/calendar_datepicker.php">naptárkezeléshez</a>, a másikat <a href="http://pchart.sourceforge.net/index.php">grafikon készítéshez</a>.</li>
+</ol>
+</p>
+</body>
+</html>

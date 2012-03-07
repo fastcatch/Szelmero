@@ -29,3 +29,5 @@ input, select, textarea {
 #mycalendar .disabledate { color: #669999; }
 
 .tcday, .tcmonth, .tcyear { font-size: 11px; }
+
+.calendarcontainer { border: 1px solid #cccccc; background-color: #efefef; padding: 2px; }
